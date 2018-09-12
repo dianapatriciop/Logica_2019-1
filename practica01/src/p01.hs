@@ -19,3 +19,4 @@ igual _ Cero = False
 igual (Suc n) (Suc m) = igual n m
 
 nueva linea de texto
+ñ2
