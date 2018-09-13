@@ -53,10 +53,3 @@ numConj x = case x of
     Oor a b-> (numConj a) + (numConj b) 
     Oimp a b -> (numConj a) + (numConj b) 
 
-
-
-
-=======
-nueva linea de texto
-ñ2
->>>>>>> 0ae3f9d56600ede6ba18d808cae05d04adf2241a
