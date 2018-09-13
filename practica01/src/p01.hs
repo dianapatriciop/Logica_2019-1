@@ -18,7 +18,6 @@ igual Cero _ = False
 igual _ Cero = False
 igual (Suc n) (Suc m) = igual n m
 
-<<<<<<< HEAD
 data ListaDeNaturales = Nil | Cons Natural ListaDeNaturales
 --Dadas dos listas regresa la concatenación de ambas
 concate :: [Natural] -> [Natural] -> [Natural]
