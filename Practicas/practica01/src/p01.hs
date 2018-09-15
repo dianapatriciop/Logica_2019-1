@@ -99,7 +99,7 @@ esClausula x = case x of
     Top -> False
     Var y -> True  --es clausula si es Literal = <Variable> | Oneg <Variable>
     Oimp alpha beta -> False
-    Oor alpha beta -> (esLiteral alpha) || (esClausula beta) 
+    Oor alpha beta -> (esLiteral alpha) && (esClausula beta) 
     Oand alpha beta -> (False)
     Oneg alpha -> esLiteral alpha
 
