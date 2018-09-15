@@ -68,9 +68,9 @@ type Modelo = [Indice]
 --Dada una fórmula proposicional, evalúar la fórmula de acuerdo a un modelo
 satMod :: Modelo-> PL -> Bool
 satMod m phi= case phi of 
-    Bot             -> False        
-    Top             -> True         
-    Var x           -> x `elem` m   
+    Bot -> False        
+    Top -> True         
+    Var x -> x `elem` m   
     Oimp alpha beta -> not(satMod m alpha) || (satMod m beta)      
     Oor alpha beta -> (satMod m alpha) || (satMod m beta)      
     Oand alpha beta -> (satMod m alpha) && (satMod m beta)      
@@ -100,12 +100,20 @@ esClausula x = case x of
     Var y -> True  --es clausula si es Literal = <Variable> | Oneg <Variable>
     Oimp alpha beta -> False
     Oor alpha beta -> (esLiteral alpha) || (esClausula beta) 
-    Oand aplha beta -> (False)
+    Oand alpha beta -> (False)
     Oneg alpha -> esLiteral alpha
 
 
 --Dada una fórmula nos indica si esta en forma normal de conjunción.
---esCNF :: PL ->Bool
+esCNF :: PL ->Bool
+esCNF x = case x of
+    Bot -> esClausula Bot
+    Top -> esClausula Top
+    Var y -> esClausula (Var y)
+    Oimp alpha beta-> False
+    Oor alpha beta -> False
+    Oand alpha beta -> (esClausula alpha) && (esCNF beta)
+    Oneg alpha -> esClausula alpha
 
 --Dada una fórmula nos indica si es un término.
 --esTermino :: PL ->Bool
