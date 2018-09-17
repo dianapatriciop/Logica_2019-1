@@ -127,10 +127,30 @@ esCNF x = case x of
     Oneg alpha -> esClausula alpha
 
 --Dada una fórmula nos indica si es un término.
---esTermino :: PL ->Bool
+esTermino :: PL ->Bool
+esTermino x = case x of
+    Bot -> False
+    Top -> True
+    Var y -> esLiteral (Var y)
+    Oimp alpha beta-> False
+    Oor alpha beta -> False
+    Oand alpha beta -> (esLiteral alpha) && (esTermino beta)
+    Oneg alpha -> esLiteral alpha
+
+
 
 --Dada una fórmula nos indica si esta en forma normal de disyunción.
---esDNF :: PL ->Bool
+esDNF :: PL ->Bool
+esDNF x = case x of
+    Bot -> esTermino Bot
+    Top -> esTermino Top
+    Var y -> esTermino (Var y)
+    Oimp alpha beta-> False
+    Oor alpha beta -> (esTermino alpha) && (esDNF beta)
+    Oand alpha beta -> False
+    Oneg alpha -> esTermino alpha
+
+
 
 
 --Dada una fórmula en NNF y sin implicaciones, dar su CNF, tal que sean logicamente equivalentes
