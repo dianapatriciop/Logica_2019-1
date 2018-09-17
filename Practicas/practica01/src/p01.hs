@@ -24,16 +24,20 @@ igual (Suc n) (Suc m) = igual n m
 data ListaDeNaturales = Nil | Cons Natural ListaDeNaturales
 
 --Dadas dos listas de naturales regresar la concatenación de ambas.
-concate :: [Natural] -> [Natural] -> [Natural]
-concate [] [] = []
-concate [] x = x
-concate x [] = x
-concate l (x:xs) = concate (l++[x]) xs
+concate :: ListaDeNaturales -> ListaDeNaturales -> ListaDeNaturales
+concate Nil Nil = Nil
+concate x Nil = x
+concate Nil x = x
+concate (Cons n ns) (Cons x xs) = case ns of
+                                    Nil -> Cons n (Cons x xs)
+                                    otherwise -> case xs of
+                                                    Nil -> Cons n (concate ns (Cons x Nil))
+                                                    otherwise -> Cons n (concate ns (Cons x xs))
 
 --Dada una lista regresar la reversa de dicha lista.
-reversa :: [Natural] -> [Natural]
-reversa [] = []
-reversa (x:xs) = reversa (xs) ++ [x]
+reversa :: ListaDeNaturales -> ListaDeNaturales
+reversa Nil = Nil
+reversa q = q
 
 -- Tipo de dato indice
 type Indice = Int
@@ -46,7 +50,14 @@ data PL = Top |Bot | Var Indice
     |Oimp PL PL deriving (Eq, Show)
 
 --Dada una fórmula regresar una lista con las conjunciones de dicha fórmula
---conj :: PL -> [PL]
+conj :: PL -> [PL]
+conj Top = []
+conj Bot = []
+conj (Var indice) = []
+conj (Oneg pl) = conj pl
+conj (Oor pl1 pl2) = (conj pl1)++ (conj pl2)
+conj (Oimp pl1 pl2) = (conj pl1) ++ (conj pl2)
+conj (Oand pl1 pl2) = [Oand pl1 pl2]++(conj pl1) ++ (conj pl2)
 
 --Dada una fórmula regresar el número de conjunciones que tiene dicha formula
 numConj :: PL -> Int
@@ -120,6 +131,7 @@ esCNF x = case x of
 
 --Dada una fórmula nos indica si esta en forma normal de disyunción.
 --esDNF :: PL ->Bool
+
 
 --Dada una fórmula en NNF y sin implicaciones, dar su CNF, tal que sean logicamente equivalentes
 --toCNF :: PL ->PL
